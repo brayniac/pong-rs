@@ -1,5 +1,7 @@
-#[macro_use] extern crate clap;
-#[macro_use] extern crate lazy_static;
+#[macro_use]
+extern crate clap;
+#[macro_use]
+extern crate lazy_static;
 extern crate ipnetwork;
 extern crate pnet;
 extern crate rips;
@@ -31,15 +33,15 @@ fn main() {
     let args = ArgumentParser::new();
 
     let (_, iface) = args.get_iface();
-    let listen_address = args.get_src_net();
+    let src_net = args.get_src_net();
     let gateway = args.get_gw();
-    let listen_port = args.get_src_port();
+    let src_port = args.get_src_port();
     let channel = args.create_channel();
-    let src = SocketAddr::V4(SocketAddrV4::new(listen_address.ip(), listen_port));
+    let src = SocketAddr::V4(SocketAddrV4::new(src_net.ip(), src_port));
 
     let mut stack = rips::NetworkStack::new();
     stack.add_interface(iface.clone(), channel).unwrap();
-    stack.add_ipv4(&iface, listen_address).unwrap();
+    stack.add_ipv4(&iface, src_net).unwrap();
     {
         let routing_table = stack.routing_table();
         routing_table.add_route(*DEFAULT_ROUTE, Some(gateway), iface);
@@ -56,7 +58,6 @@ fn handle(mut socket: UdpSocket) {
     let mut buffer = vec![0; 1024*2];
     loop {
         let (_, src) = socket.recv_from(&mut buffer).expect("Unable to read from socket");
-        println!("PONG");
         let _ = socket.send_to(&response, src);
     }
 }
@@ -100,7 +101,7 @@ impl ArgumentParser {
             let (iface, _) = self.get_iface();
             if let Some(ips) = iface.ips.as_ref() {
                 for ip in ips {
-                    if let &IpAddr::V4(ip) = ip {
+                    if let IpAddr::V4(ip) = *ip {
                         return Ipv4Network::new(ip, 24).unwrap();
                     }
                 }
@@ -134,8 +135,8 @@ impl ArgumentParser {
     pub fn create_channel(&self) -> rips::EthernetChannel {
         let (iface, _) = self.get_iface();
         let mut config = datalink::Config::default();
-        config.write_buffer_size = 1024*64;
-        config.read_buffer_size = 1024*64;
+        config.write_buffer_size = 1024 * 64;
+        config.read_buffer_size = 1024 * 64;
         match datalink::channel(&iface, config) {
             Ok(datalink::Channel::Ethernet(tx, rx)) => rips::EthernetChannel(tx, rx),
             _ => self.print_error(&format!("Unable to open network channel on {}", iface.name)),
@@ -146,7 +147,8 @@ impl ArgumentParser {
         let src_net_arg = clap::Arg::with_name("src_net")
             .long("ip")
             .value_name("CIDR")
-            .help("Local IP and prefix to send from, in CIDR format. Will default to first IP on given iface and prefix 24.")
+            .help("Local IP and prefix to send from, in CIDR format. Will default to first IP on \
+                   given iface and prefix 24.")
             .takes_value(true);
         let src_port_arg = clap::Arg::with_name("src_port")
             .long("sport")
@@ -157,23 +159,23 @@ impl ArgumentParser {
             .long("gateway")
             .short("gw")
             .value_name("IP")
-            .help("The default gateway to use if the destination is not on the local network. Must be inside the network given to --ip. Defaults to the first address in the network given to --ip")
+            .help("The default gateway to use if the destination is not on the local network. \
+                   Must be inside the network given to --ip. Defaults to the first address in \
+                   the network given to --ip")
             .takes_value(true);
         let iface_arg = clap::Arg::with_name("iface")
             .help("Network interface to use")
             .required(true)
             .index(1);
 
-        let app = clap::App::new("UDP Echo Server")
+        clap::App::new("UDP ping server")
             .version(crate_version!())
             .author(crate_authors!())
-            .about("A simple UDP echo server with a userspace network stack")
+            .about("A simple UDP ping server with a userspace network stack")
             .arg(src_net_arg)
             .arg(src_port_arg)
             .arg(gw)
-            .arg(iface_arg);
-
-        app
+            .arg(iface_arg)
     }
 
     fn print_error(&self, error: &str) -> ! {

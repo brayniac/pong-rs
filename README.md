@@ -1,6 +1,6 @@
 # pong-rs - a UDP ASCII ping server with userspace networking
 
-pong-rs is a UDP ASCII ping server which makes use of [librips](httos://github.com/faern/librips) for userspace networking. It provides a basic server for demonstration and benchmarking.
+pong-rs is a UDP ASCII ping server which makes use of [librips](https://github.com/faern/librips) for userspace networking. It provides a basic server for demonstration and benchmarking.
 
 ## Usage
 
@@ -10,13 +10,6 @@ With stable rust, just build and run (note: you must change the parameters to re
 ```shell
 git clone https://github.com/brayniac/pong-rs
 cargo build --release
-sudo ./target/release/pong-rs --ip 10.138.0.3/32 --gateway 10.138.0.1 eth0
-```
-
-With nightly rust, you may use the 'asm' feature to provide lower-cost timestamping of events:
-```shell
-git clone https://github.com/brayniac/pong-rs
-cargo build --release --features asm
 sudo ./target/release/pong-rs --ip 10.138.0.3/32 --gateway 10.138.0.1 eth0
 ```
 
