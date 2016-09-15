@@ -1,0 +1,51 @@
+[package]
+name = "pong-rs"
+version = "0.1.0"
+authors = ["Brian Martin <brayniac@gmail.com>"]
+
+license = "MIT OR Apache-2.0"
+
+description = "UDP ASCII ping server with userspace networking"
+
+homepage = "https://github.com/brayniac/pong-rs"
+repository = "https://github.com/brayniac/pong-rs"
+
+readme = "README.md"
+
+[dependencies]
+clap = "^2"
+ipnetwork = "0.9.0"
+lazy_static = "^0.2"
+
+[dependencies.pnet]
+git = "https://github.com/libpnet/libpnet"
+
+[dependencies.rips]
+git = "https://github.com/faern/librips"
+
+[features]
+netmap = [ "pnet/netmap" ]
+
+[profile.dev]
+opt-level = 0
+debug = true
+rpath = false
+lto = false
+debug-assertions = true
+codegen-units = 1
+
+[profile.bench]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
