@@ -13,11 +13,18 @@ cargo build --release
 sudo ./target/release/pong-rs --ip 10.138.0.3/32 --gateway 10.138.0.1 eth0
 ```
 
+Optimized event timestamping. WARNING: this adds platform specific optimizations!!! Only tested on Intel x86_64. This assumes the constant_tsc feature is available on your particular CPU. Beware of potential for incorrect metrics if the assumptions do not hold.
+```shell
+git clone https://github.com/brayniac/pong-rs
+cargo build --release --features asm
+sudo ./target/release/pong-rs --ip 10.138.0.3/32 --gateway 10.138.0.1 eth0
+```
+
 Once launched, you may use [ping-rs](https://github.com/brayniac/ping-rs) for benchmarking the server
 
 ## Features
 
-* simple ASCII ping server
+* over-engineered ASCII ping server
 * userspace UDP implementation
 
 ## License
