@@ -21,10 +21,11 @@ tic = "*"
 time = "*"
 
 [dependencies.pnet]
-git = "https://github.com/libpnet/libpnet"
+git = "https://github.com/faern/libpnet"
+branch = "working-stack"
 
 [dependencies.rips]
-git = "https://github.com/faern/librips"
+git = "https://github.com/brayniac/librips"
 
 [features]
 netmap = [ "pnet/netmap" ]
