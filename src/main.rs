@@ -121,7 +121,7 @@ impl ArgumentParser {
 
     pub fn get_iface(&self) -> (NetworkInterface, rips::Interface) {
         let iface_name = self.matches.value_of("iface").unwrap();
-        for iface in datalink::interfaces().into_iter() {
+        for iface in datalink::interfaces() {
             if iface.name == iface_name {
                 if let Ok(rips_iface) = rips::convert_interface(&iface) {
                     return (iface, rips_iface);
