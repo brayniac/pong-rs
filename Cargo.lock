@@ -6,8 +6,8 @@ dependencies = [
  "ipnetwork 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "pnet 0.12.0 (git+https://github.com/libpnet/libpnet)",
- "rips 0.0.0 (git+https://github.com/faern/librips)",
+ "pnet 0.13.0 (git+https://github.com/faern/libpnet?branch=working-stack)",
+ "rips 0.0.0 (git+https://github.com/brayniac/librips)",
  "tic 0.0.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -289,13 +289,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "pnet"
-version = "0.12.0"
-source = "git+https://github.com/libpnet/libpnet#e0f0ef1250a9eb27638a17d64cbbc312b64a9d75"
+version = "0.13.0"
+source = "git+https://github.com/faern/libpnet?branch=working-stack#f89927b97ff2fe9ad90eac5f298e08f387f4b19b"
 dependencies = [
  "libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)",
  "netmap_sys 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "pnet_macros 0.10.0 (git+https://github.com/libpnet/libpnet)",
- "pnet_macros_support 0.1.1 (git+https://github.com/libpnet/libpnet)",
+ "pnet_macros 0.11.0 (git+https://github.com/faern/libpnet?branch=working-stack)",
+ "pnet_macros_support 0.1.1 (git+https://github.com/faern/libpnet?branch=working-stack)",
  "syntex 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "ws2_32-sys 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -303,8 +303,8 @@ dependencies = [
 
 [[package]]
 name = "pnet_macros"
-version = "0.10.0"
-source = "git+https://github.com/libpnet/libpnet#e0f0ef1250a9eb27638a17d64cbbc312b64a9d75"
+version = "0.11.0"
+source = "git+https://github.com/faern/libpnet?branch=working-stack#f89927b97ff2fe9ad90eac5f298e08f387f4b19b"
 dependencies = [
  "regex 0.1.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "syntex 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -314,7 +314,7 @@ dependencies = [
 [[package]]
 name = "pnet_macros_support"
 version = "0.1.1"
-source = "git+https://github.com/libpnet/libpnet#e0f0ef1250a9eb27638a17d64cbbc312b64a9d75"
+source = "git+https://github.com/faern/libpnet?branch=working-stack#f89927b97ff2fe9ad90eac5f298e08f387f4b19b"
 
 [[package]]
 name = "rand"
@@ -344,11 +344,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "rips"
 version = "0.0.0"
-source = "git+https://github.com/faern/librips#bd20891c2a35dba18353b6fe7241d398926e7d53"
+source = "git+https://github.com/brayniac/librips#2da7dd38544732c896288f1eae56f9933aa8e062"
 dependencies = [
  "ipnetwork 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "pnet 0.12.0 (git+https://github.com/libpnet/libpnet)",
+ "pnet 0.13.0 (git+https://github.com/faern/libpnet?branch=working-stack)",
+ "rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -617,13 +618,13 @@ dependencies = [
 "checksum num-iter 0.1.32 (registry+https://github.com/rust-lang/crates.io-index)" = "287a1c9969a847055e1122ec0ea7a5c5d6f72aad97934e131c83d5c08ab4e45c"
 "checksum num-traits 0.1.36 (registry+https://github.com/rust-lang/crates.io-index)" = "a16a42856a256b39c6d3484f097f6713e14feacd9bfb02290917904fae46c81c"
 "checksum odds 0.2.22 (registry+https://github.com/rust-lang/crates.io-index)" = "308eb922caa165a2c4be8004abf87822fc4b444ab339f70fc172236b1905efb0"
-"checksum pnet 0.12.0 (git+https://github.com/libpnet/libpnet)" = "<none>"
-"checksum pnet_macros 0.10.0 (git+https://github.com/libpnet/libpnet)" = "<none>"
-"checksum pnet_macros_support 0.1.1 (git+https://github.com/libpnet/libpnet)" = "<none>"
+"checksum pnet 0.13.0 (git+https://github.com/faern/libpnet?branch=working-stack)" = "<none>"
+"checksum pnet_macros 0.11.0 (git+https://github.com/faern/libpnet?branch=working-stack)" = "<none>"
+"checksum pnet_macros_support 0.1.1 (git+https://github.com/faern/libpnet?branch=working-stack)" = "<none>"
 "checksum rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)" = "2791d88c6defac799c3f20d74f094ca33b9332612d9aef9078519c82e4fe04a5"
 "checksum regex 0.1.77 (registry+https://github.com/rust-lang/crates.io-index)" = "64b03446c466d35b42f2a8b203c8e03ed8b91c0f17b56e1f84f7210a257aa665"
 "checksum regex-syntax 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)" = "279401017ae31cf4e15344aa3f085d0e2e5c1e70067289ef906906fdbe92c8fd"
-"checksum rips 0.0.0 (git+https://github.com/faern/librips)" = "<none>"
+"checksum rips 0.0.0 (git+https://github.com/brayniac/librips)" = "<none>"
 "checksum rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)" = "6159e4e6e559c81bd706afe9c8fd68f547d3e851ce12e76b1de7914bab61691b"
 "checksum rusttype 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)" = "07b8848db3b5b5ba97020c6a756c0fdf2dbf2ad7c0d06aa4344a3f2f49c3fe17"
 "checksum shuteye 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "2fae018891baadd06ff0281ff137ccd1641044d9bb9498b1138ffecf28f30172"
