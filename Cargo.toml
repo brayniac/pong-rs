@@ -16,6 +16,9 @@ readme = "README.md"
 clap = "^2"
 ipnetwork = "0.9.0"
 lazy_static = "^0.2"
+log = "*"
+tic = "*"
+time = "*"
 
 [dependencies.pnet]
 git = "https://github.com/libpnet/libpnet"
@@ -25,6 +28,7 @@ git = "https://github.com/faern/librips"
 
 [features]
 netmap = [ "pnet/netmap" ]
+asm = [ "tic/asm" ]
 
 [profile.dev]
 opt-level = 0
