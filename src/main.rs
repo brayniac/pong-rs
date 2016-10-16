@@ -86,9 +86,9 @@ fn main() {
     let cs = receiver.get_clocksource();
     let sender = receiver.get_sender();
     thread::spawn(move || {
-                   handle(socket, cs, sender);
-                });
-    
+        handle(socket, cs, sender);
+    });
+
     receiver.run();
 }
 
