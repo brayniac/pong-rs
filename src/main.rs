@@ -1,20 +1,30 @@
 #[macro_use]
+extern crate log;
+#[macro_use]
 extern crate clap;
 #[macro_use]
 extern crate lazy_static;
 extern crate ipnetwork;
 extern crate pnet;
 extern crate rips;
+extern crate tic;
 
+use std::fmt;
 use std::io::Write;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr, SocketAddrV4};
 use std::process;
 use std::str::FromStr;
 use std::sync::{Arc, Mutex};
 
+use std::thread;
+
+use tic::{Clocksource, Interest, Receiver, Sample, Sender};
 use ipnetwork::Ipv4Network;
 use pnet::datalink::{self, NetworkInterface};
 use rips::udp::UdpSocket;
+
+mod logging;
+use logging::set_log_level;
 
 lazy_static! {
     static ref DEFAULT_ROUTE: Ipv4Network = Ipv4Network::from_cidr("0.0.0.0/0").unwrap();
@@ -29,7 +39,21 @@ macro_rules! eprintln {
     )
 }
 
+#[derive(Clone, PartialEq, Eq, Hash)]
+pub enum Metric {
+    Ok,
+}
+
+impl fmt::Display for Metric {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            Metric::Ok => write!(f, "ok"),
+        }
+    }
+}
+
 fn main() {
+    set_log_level(0);
     let args = ArgumentParser::new();
 
     let (_, iface) = args.get_iface();
@@ -47,18 +71,36 @@ fn main() {
         routing_table.add_route(*DEFAULT_ROUTE, Some(gateway), iface);
     }
 
+    // initialize a tic::Receiver to ingest stats
+    let mut receiver = Receiver::configure()
+        .windows(24*3600) // 1 day
+        .duration(1)
+        .capacity(1024)
+        .http_listen("0.0.0.0:42024".to_owned())
+        .build();
+
+    receiver.add_interest(Interest::Count(Metric::Ok));
+
     let stack = Arc::new(Mutex::new(stack));
     let socket = UdpSocket::bind(stack, src).unwrap();
+    let cs = receiver.get_clocksource();
+    let sender = receiver.get_sender();
+    thread::spawn(move || {
+        handle(socket, cs, sender);
+    });
 
-    handle(socket);
+    receiver.run();
 }
 
-fn handle(mut socket: UdpSocket) {
+fn handle(mut socket: UdpSocket, clocksource: Clocksource, stats: Sender<Metric>) {
     let response = "PONG\r\n".to_owned().into_bytes();
     let mut buffer = vec![0; 1024*2];
     loop {
         let (_, src) = socket.recv_from(&mut buffer).expect("Unable to read from socket");
+        let t0 = clocksource.counter();
         let _ = socket.send_to(&response, src);
+        let t1 = clocksource.counter();
+        let _ = stats.send(Sample::new(t0, t1, Metric::Ok));
     }
 }
 
@@ -79,7 +121,7 @@ impl ArgumentParser {
 
     pub fn get_iface(&self) -> (NetworkInterface, rips::Interface) {
         let iface_name = self.matches.value_of("iface").unwrap();
-        for iface in datalink::interfaces().into_iter() {
+        for iface in datalink::interfaces() {
             if iface.name == iface_name {
                 if let Ok(rips_iface) = rips::convert_interface(&iface) {
                     return (iface, rips_iface);
