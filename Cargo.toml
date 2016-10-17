@@ -28,7 +28,7 @@ branch = "working-stack"
 git = "https://github.com/brayniac/librips"
 
 [features]
-netmap = [ "pnet/netmap" ]
+netmap = [ "pnet/netmap", "rips/netmap" ]
 asm = [ "tic/asm" ]
 
 [profile.dev]
