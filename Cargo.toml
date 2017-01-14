@@ -14,22 +14,20 @@ readme = "README.md"
 
 [dependencies]
 clap = "^2"
-ipnetwork = "0.9.0"
+ipnetwork = "=0.10.0"
 lazy_static = "^0.2"
-log = "*"
-tic = "*"
-time = "*"
-
-[dependencies.pnet]
-git = "https://github.com/brayniac/libpnet"
-branch = "working-stack"
+log = "0.3.6"
+tic = "=0.0.10"
+time = "0.1.35"
+pnet = "0.15.0"
 
 [dependencies.rips]
-git = "https://github.com/brayniac/librips"
+git = "https://github.com/brayniac/rips"
+branch = "netmap"
 
 [features]
-netmap = [ "pnet/netmap", "rips/netmap" ]
 asm = [ "tic/asm" ]
+netmap = [ "pnet/netmap", "rips/netmap" ]
 
 [profile.dev]
 opt-level = 0
